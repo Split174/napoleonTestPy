@@ -18,3 +18,4 @@ class UserModel(Base):
                    for c in self.__table__.columns}
         user.pop('password')
         return user
+

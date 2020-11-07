@@ -11,19 +11,19 @@ from contextlib import contextmanager
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from config import Config
 
-engine = create_engine(os.getenv('DATABASE_URL'))
 
-
+engine = create_engine(Config.DB_CONNECTION, echo=True, pool_pre_ping=True)
 # Session to be used throughout app.
 Session = sessionmaker(bind=engine)
-
 
 @contextmanager
 def scoped_session():
     session = Session()
     try:
         yield session
+        session.expunge_all()
         session.commit()
     except:
         session.rollback()

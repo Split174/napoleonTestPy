@@ -1,15 +1,12 @@
 from sanic import Sanic
 from sanic.response import json
 import os
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
-
+from config import Config
 from blueprints.user import bp as bp_user
 from blueprints.offer import bp as bp_offer
 
 
-
-app = Sanic(__name__)
+app = Sanic("test")
 app.blueprint((bp_user,
                bp_offer))
 
