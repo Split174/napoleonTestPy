@@ -13,8 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import Config
 
-
-engine = create_engine(Config.DB_CONNECTION, echo=True, pool_pre_ping=True)
+engine = create_engine(Config.DB_CONNECTION)
 # Session to be used throughout app.
 Session = sessionmaker(bind=engine)
 
