@@ -14,12 +14,12 @@ async def auth_user(request):
     try:
         user_data = AuthUserSchema.parse_obj(request.json)
     except ValidationError as e:
-        return json((e.errors(), 401))
+        return json((e.errors(), 400))
     service = AuthService()
     try:
         user_id, token = service.authenticate(user_data)
         return json({"user_id": user_id, "token": token},
                     200)
     except IncorrectlyLoginPassExcept:
-        return json({"answer": "Password or username incorrectly"}, 401)
+        return json({"answer": "Password or username incorrectly"}, 400)
 

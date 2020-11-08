@@ -14,14 +14,14 @@ async def create_offer(request):
     try:
         offer_data = CreateOfferSchema.parse_obj(request.json)
     except ValidationError as e:
-        return json(e.errors(), 400)
+        return json(e.errors(), 422)
 
     try:
         is_current_user = AuthService().indentify(request, "user_id")
     except:
-        return json({"answer": "not a valid token"}, 400)
+        return json({"answer": "not a valid token"}, 401)
     if not is_current_user:
-        return json({"answer": "not a valid token"}, 400)
+        return json({"answer": "not a valid token"}, 401)
     try:
         user = UserService().get_user_by_id(offer_data.user_id)
     except UserNotFound as e:
@@ -36,7 +36,7 @@ async def get_offer(request):
     try:
         offer_data = FindOfferSchema.parse_obj(request.json)
     except ValidationError as e:
-        return json(e.errors(), 400)
+        return json(e.errors(), 422)
     service_offer = OfferService()
     if offer_data.offer_id is not None:
         offer = service_offer.get_offer_by_id(offer_data.offer_id)
