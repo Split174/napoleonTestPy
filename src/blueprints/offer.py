@@ -1,12 +1,11 @@
+from jwt import InvalidSignatureError
 from sanic.response import json
 from sanic import Blueprint
 from pydantic import ValidationError
-from database import scoped_session, Session
-from models import OfferModel
 from services.offer import OfferService
 from scheme.offer import CreateOfferSchema, FindOfferSchema
 from services.user import UserService, UserNotFound
-
+from services.auth import AuthService
 bp = Blueprint('offer')
 
 
@@ -16,6 +15,13 @@ async def create_offer(request):
         offer_data = CreateOfferSchema.parse_obj(request.json)
     except ValidationError as e:
         return json(e.errors(), 400)
+
+    try:
+        is_current_user = AuthService().indentify(request, "user_id")
+    except:
+        return json({"answer": "not a valid token"}, 400)
+    if not is_current_user:
+        return json({"answer": "not a valid token"}, 400)
     try:
         user = UserService().get_user_by_id(offer_data.user_id)
     except UserNotFound as e:
@@ -23,7 +29,6 @@ async def create_offer(request):
     offer_serivce = OfferService()
     new_offer = offer_serivce.create_offer(offer_data)
     return json(new_offer.as_dict(), 201)
-
 
 
 @bp.route('/offer/', methods=["POST"])

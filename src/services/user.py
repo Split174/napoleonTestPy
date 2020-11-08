@@ -7,11 +7,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from typing import Optional
 from services.offer import OfferService
 
+
 class UserExistExcept(ServiceError):
-    pass
-
-
-class IncorrectlyLoginPassExcept(ServiceError):
     pass
 
 
@@ -42,14 +39,6 @@ class UserService:
                     UserModel.username == user.username))\
                 .first()
         return False if find_user is None else True
-
-    def auth_user(self, user: AuthUserSchema) -> Optional[UserModel]:
-        with scoped_session() as session:
-            user_data = session.query(UserModel).filter(UserModel.username == user.username).first()
-
-            if user_data is None or not check_password_hash(user_data.password, user.password):
-                raise IncorrectlyLoginPassExcept()
-        return user_data
 
     def get_user_and_offers(self, user_id):
         user = self._get_user_by_id(user_id)
