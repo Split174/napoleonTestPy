@@ -1,0 +1,214 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Swagger for test napoleonIT"
+  contact:
+    email: "sergei.popov174@gmail.com"
+
+tags:
+- name: "user"
+- name: "offer"
+schemes:
+- "https"
+- "http"
+paths:
+  /user/registry/:
+    post:
+      tags:
+      - "user"
+      summary: "Register user"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/userRegister"
+      responses:
+        "422":
+          description: "Invalid input"
+        "409":
+          description: "User exist"
+        "201":
+          description: "Ok"
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+                description: The user ID.
+                example: 7
+  /user/auth/:
+    post:
+      tags:
+      - "user"
+      summary: "Auth user"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/userAuth"
+      responses:
+        "400":
+          description: "Invalid input"
+        "200":
+          description: "Ok"
+          schema:
+            type: object
+            properties:
+              user_id:
+                type: integer
+                description: The user ID.
+              token:
+                type: string
+                description: JWT token
+  /user/{user_id}/:
+    get:
+      tags:
+      - "user"
+      summary: "Get user information"
+      parameters:
+      - name: "user_id"
+        in: "path"
+        description: "ID of user to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+          "404":
+            description: "user with this id does not exist"
+          "200":
+            description: "Ok"
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: The user ID.
+                username:
+                  type: string
+                email:
+                  type: string
+                offers:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      user_id:
+                        type: integer
+                      title:
+                        type: string
+                      text:
+                        type: string
+  /offer/create/:
+    post:
+      tags:
+      - "offer"
+      summary: "Create offer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/createOffer"
+      responses:
+        "401":
+          description: "Unauth"
+        "422":
+          description: "invalid data"
+        "201":
+          description: "Ok"
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Offer id.
+              user_id:
+                type: integer
+              title:
+                type: string
+              text:
+                type: string
+  /offer/:
+    post:
+      tags:
+      - "offer"
+      summary: "Find offers or get one offer"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/findOffer"
+      responses:
+        "422":
+          description: "invalid data"
+        "200":
+          description: "Ok"
+          schema:
+            type: object
+            properties:
+              offers:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    user_id:
+                      type: integer
+                    title:
+                      type: string
+                    text:
+                      type: string
+definitions:
+  userRegister:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+      email:
+        type: string
+  userAuth:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  findOffer:
+    type: object
+    properties:
+      offer_id:
+        type: string
+      user_id:
+        type: string
+  createOffer:
+    type: object
+    properties:
+      user_id:
+        type: integer
+      title:
+        type: string
+      text:
+        type: string
