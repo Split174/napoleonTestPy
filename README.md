@@ -23,3 +23,6 @@ Api маршруты в директории src/blueprints/ \
 - DATABASE_URL
 - SECRET_KEY
 
+##### Замечания по маршрутам
+Создание офера требует наличие валидного jwt токена в headers.token
+
