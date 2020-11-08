@@ -1,12 +1,15 @@
+"""
+    Module with user get and create service
+"""
 from database import scoped_session
-from scheme.user import RegisterUserSchema, AuthUserSchema
+from scheme.user import RegisterUserSchema
 from models import UserModel
 from sqlalchemy import or_
 from exception import ServiceError
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from typing import Optional
 from services.offer import OfferService
-
+from typing import Dict, Tuple
 
 class UserExistExcept(ServiceError):
     pass
@@ -40,8 +43,8 @@ class UserService:
                 .first()
         return False if find_user is None else True
 
-    def get_user_and_offers(self, user_id):
-        user = self._get_user_by_id(user_id)
+    def get_user_and_offers(self, user_id) -> Tuple[UserModel, Dict]:
+        user = self.get_user_by_id(user_id)
         offers = self.service_offer.get_offers_by_user_id(user_id)
         return user, offers
 

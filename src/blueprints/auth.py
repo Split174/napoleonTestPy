@@ -1,3 +1,6 @@
+"""
+    Module for authorization routing
+"""
 from sanic.response import json
 from sanic import Blueprint
 from pydantic import ValidationError
@@ -11,6 +14,10 @@ bp = Blueprint('auth')
 
 @bp.route('/user/auth/', methods=["POST"])
 async def auth_user(request):
+    """
+    :param request:
+    :return: json(user_id, token)
+    """
     try:
         user_data = AuthUserSchema.parse_obj(request.json)
     except ValidationError as e:

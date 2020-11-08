@@ -1,5 +1,8 @@
-from pydantic import BaseModel, validators, root_validator
-from typing import List, Optional
+"""
+    Module with offers validation models
+"""
+from pydantic import BaseModel, root_validator
+from typing import Optional
 
 
 class CreateOfferSchema(BaseModel):

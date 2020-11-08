@@ -1,7 +1,12 @@
+"""
+    Module with user authorization service
+    class:
+        IncorrectlyLoginPassExcept
+        NotExistToken
+        AuthService
+"""
 from datetime import datetime, timedelta
 import jwt
-from jwt import InvalidSignatureError
-
 from config import Config
 from database import scoped_session
 from models import UserModel
@@ -18,11 +23,12 @@ class IncorrectlyLoginPassExcept(ServiceError):
 class NotExistToken(ServiceError):
     pass
 
+
 class AuthService:
     @staticmethod
     def encode_auth_token(user_id):
         payload = {
-            'exp': datetime.utcnow() + timedelta(seconds=60),
+            'exp': datetime.utcnow() + timedelta(minutes=60),
             'data': {
                 'user_id': user_id,
             }
@@ -50,7 +56,13 @@ class AuthService:
             else:
                 raise IncorrectlyLoginPassExcept()
 
-    def indentify(self, request, field_check: str):
+    def indentify(self, request, field_check: str) -> bool:
+        """
+        token validation and comparison of user_id from token with user_id from body
+        :param request:
+        :param field_check:
+        :return:
+        """
         if request.headers["token"] is None:
             raise NotExistToken()
         user_id = self.decode_auth_token(request.headers["token"])["data"][field_check]

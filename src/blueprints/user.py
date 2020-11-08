@@ -1,3 +1,6 @@
+"""
+    Module for routing registration and obtaining a user
+"""
 from sanic.response import json
 from sanic import Blueprint
 from pydantic import ValidationError

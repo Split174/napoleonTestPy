@@ -1,4 +1,8 @@
-from pydantic import BaseModel, ValidationError, validator
+"""
+    Module with user validation models
+"""
+
+from pydantic import BaseModel, validator
 
 
 class RegisterUserSchema(BaseModel):

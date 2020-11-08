@@ -1,3 +1,9 @@
+"""
+    this module contains classes describing relationships
+    classes:
+    OfferModel
+    UserModel
+"""
 from sqlalchemy import Column, Integer, Text, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()

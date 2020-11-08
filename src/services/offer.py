@@ -1,10 +1,9 @@
+"""
+    Module with offer service
+"""
 from database import scoped_session
 from scheme.offer import CreateOfferSchema
 from models import OfferModel
-from sqlalchemy import or_
-from exception import ServiceError
-from werkzeug.security import generate_password_hash, check_password_hash
-from typing import Optional
 from typing import List, Dict
 
 

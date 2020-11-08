@@ -1,4 +1,6 @@
-from jwt import InvalidSignatureError
+"""
+    Module for routing creation and search offers
+"""
 from sanic.response import json
 from sanic import Blueprint
 from pydantic import ValidationError
@@ -11,6 +13,13 @@ bp = Blueprint('offer')
 
 @bp.route('/offer/create/', methods=["POST"])
 async def create_offer(request):
+    """
+    Create new offer
+    из-за требования user_id в теле запроса, код вышел запутанный
+    приходется проверять user_id в токене с user_id в теле запроса
+    :param request:
+    :return: json offer
+    """
     try:
         offer_data = CreateOfferSchema.parse_obj(request.json)
     except ValidationError as e:
@@ -33,6 +42,11 @@ async def create_offer(request):
 
 @bp.route('/offer/', methods=["POST"])
 async def get_offer(request):
+    """
+    Get offer/offers by offer_id or user_id
+    :param request:
+    :return: List[offer] of offer
+    """
     try:
         offer_data = FindOfferSchema.parse_obj(request.json)
     except ValidationError as e:
