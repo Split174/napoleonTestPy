@@ -6,6 +6,7 @@ git clone https://github.com/Split174/napoleonTestPy ~/path_test/
 cd ~/path_test/
 python -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
 python src/app.py 
 ```
 
