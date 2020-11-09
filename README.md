@@ -11,13 +11,14 @@ python src/app.py
 
 #### Структура проекта
 
-Api маршруты в директории src/blueprints/ \
-Модели pydantic для валидации в директории src/scheme/ \
-Сервисы в директории src/services/ \
-Модели ORM src/models.py \
-Конфиги src/config.py \
-Контекстный менеджер для работы с бд src/database.py \
-Базовый класс эксепшонов src/exception.py
+- Api маршруты в директории `src/blueprints/` 
+- Модели pydantic для валидации в директории `src/scheme/`
+- Сервисы в директории `src/services/`
+- Модели ORM `src/models.py`
+- Конфиги `src/config.py`
+- Контекстный менеджер для работы с бд `src/database.py`
+- Базовый класс эксепшонов `src/exception.py`
+- Swagger `docs/`
 
 ##### Переменные окружения
 - DATABASE_URL
